@@ -1,0 +1,33 @@
+spring:
+  application:
+    name: arc-back
+  datasource:
+    # 5432는 다른 프로젝트 컨테이너(muyang-pg)가 사용 중 → arcmethod 전용은 5434.
+    # docker run -d --name arc-pg -e POSTGRES_DB=arcmethod -e POSTGRES_USER=arc \
+    #   -e POSTGRES_PASSWORD=arc -p 5434:5432 postgres:16-alpine
+    url: jdbc:postgresql://localhost:5434/arcmethod
+    username: arc
+    password: arc
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      # 스키마는 db/schema.sql로 관리. 엔티티가 스키마와 어긋나면 부팅 실패 → 오타 방어.
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: true
+    open-in-view: false
+  sql:
+    init:
+      # schema.sql은 psql로 수동 실행 권장. 자동화하려면 always 로.
+      mode: never
+
+server:
+  # 8080·8082는 다른 프로세스가 사용 중 → arcmethod 백엔드는 8083.
+  # 프론트(arc-front/vite.config.ts)의 /api 프록시 타깃도 동일하게 맞출 것.
+  port: 8083
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.orm.jdbc.bind: trace

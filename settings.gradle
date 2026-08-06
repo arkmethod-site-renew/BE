@@ -1,0 +1,6 @@
+plugins {
+    // Java toolchain 자동 프로비저닝 (로컬에 JDK21 없어도 gradlew가 받아온다)
+    id 'org.gradle.toolchains.foojay-resolver-convention' version '0.8.0'
+}
+
+rootProject.name = 'arc-back'
